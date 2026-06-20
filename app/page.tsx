@@ -264,8 +264,8 @@ export default function Home() {
             <div className="mt-9 flex flex-wrap justify-center gap-4">
               <Button
                 href="/request-estimate"
-                variant="primary"
-                className="bg-sand-200 text-pine-900 hover:bg-sand-300"
+                variant="secondary"
+                className="!text-pine-800"
               >
                 Request an Estimate
               </Button>
