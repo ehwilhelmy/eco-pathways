@@ -5,18 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav } from "@/lib/site";
 import { Button } from "./ui";
+import LogoMark from "./LogoMark";
 
 function Logo() {
   return (
     <Link href="/" className="group flex items-center gap-2.5">
-      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-pine-700 text-sand-50 transition-transform group-hover:scale-105">
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-          <path
-            d="M12 2C9 7 5 9 5 14a7 7 0 0 0 14 0c0-5-4-7-7-12Z"
-            fill="currentColor"
-          />
-        </svg>
-      </span>
+      <LogoMark className="h-10 w-10 text-pine-700 transition-transform group-hover:scale-105" />
       <span className="flex flex-col leading-none">
         <span className="font-display text-lg font-semibold text-pine-800">
           Eco-Pathways
