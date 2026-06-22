@@ -27,5 +27,5 @@ export const nav: NavItem[] = [
   },
   { label: "DOCKSrx Docks", href: "/docks" },
   { label: "Golf Cart Bridges", href: "/golf-cart-bridges" },
-  { label: "About Us", href: "/about" },
+  { label: "About", href: "/about" },
 ];

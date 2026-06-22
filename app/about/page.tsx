@@ -7,7 +7,7 @@ import ContactCTA from "@/components/ContactCTA";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Meet the team behind Eco-Pathways — co-founders Frank Hopf, Ph.D., P.E. and Edward Hintlian.",
+    "Meet the team behind Eco-Pathways, led by co-founder and chief engineer Frank Hopf, Ph.D., P.E.",
 };
 
 const team = [
@@ -18,16 +18,7 @@ const team = [
     bio: [
       "Dr. Hopf holds a Ph.D. in Coastal Geomorphology (Texas A&M, 2011), along with Civil Engineering and MBA degrees, and has been a licensed Professional Engineer in Texas since 1987. After a 35-year career in the petroleum industry, he earned his doctorate and taught geology and geography at Texas A&M.",
       "His research focuses on fluvial and coastal flooding, dune and beach processes, and natural and nature-based restoration, along with the related policy. He serves in professional organizations including ASBPA, ASCE, and the Association of State Floodplain Managers.",
-      "As a founding director of Conserve Nassau, a 501(c) nonprofit, he helped establish the Dune Science Group in 2020 to advance coastal restoration methods. His work revealed that pressure-treated wooden dune walkovers pose environmental risks through toxic chemical leaching — prompting him and partner Ed Hintlian to develop non-toxic alternatives offering 50–75 year walkovers, boardwalks, docks, bridges, and elevated pathways.",
-    ],
-  },
-  {
-    name: "Edward Hintlian",
-    role: "Co-Founder, Principal & General Counsel",
-    image: img.edHintlian,
-    bio: [
-      "Ed practiced law in Boston for over 50 years, specializing in commercial transactions, real estate, lending, and franchise work.",
-      "He holds memberships in the Florida and Massachusetts bar associations, and graduated from Boston Latin School, the University of Massachusetts Amherst, and Suffolk University Law School.",
+      "As a founding director of Conserve Nassau, a 501(c) nonprofit, he helped establish the Dune Science Group in 2020 to advance coastal restoration methods. His work revealed that pressure-treated wooden dune walkovers pose environmental risks through toxic chemical leaching — prompting the development of non-toxic alternatives offering 50–75 year walkovers, boardwalks, docks, bridges, and elevated pathways.",
     ],
   },
 ];
@@ -38,7 +29,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Us"
         title="Engineers and advocates for lasting coastlines."
-        intro="Eco-Pathways was founded by a coastal engineer and a veteran attorney united by one goal: build outdoor structures that endure for generations without harming the environment."
+        intro="Eco-Pathways was founded by a coastal engineer on a single mission: build outdoor structures that endure for generations without harming the environment."
         image={img.aboutHeader}
         imageAlt="Coastal landscape"
       />

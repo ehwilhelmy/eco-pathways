@@ -84,12 +84,12 @@ export default function AdvantagesContractorsPage() {
                   Contractor partnerships
                 </p>
                 <p className="mt-2 text-lg text-ink/80">
-                  Ed Hintlian —{" "}
+                  Call us —{" "}
                   <a
-                    href="tel:+16178518833"
+                    href="tel:+18326872147"
                     className="font-semibold text-pine-700 hover:underline"
                   >
-                    617-851-8833
+                    (832) 687-2147
                   </a>
                 </p>
               </div>
