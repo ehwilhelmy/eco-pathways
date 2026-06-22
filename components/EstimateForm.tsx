@@ -18,53 +18,31 @@ const inputClass =
 const labelClass =
   "block text-sm font-semibold text-pine-800";
 
-// Set NEXT_PUBLIC_WEB3FORMS_KEY in .env.local to enable real submissions.
-// Get a free key (no account needed) at https://web3forms.com — it's tied to
-// the email you enter and is safe to expose client-side.
-// Without it, the form falls back to opening the visitor's email client.
-const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-
 type Status = "idle" | "submitting" | "sent" | "error";
 
 export default function EstimateForm() {
   const [status, setStatus] = useState<Status>("idle");
 
-  function fallbackToMailto(data: FormData) {
-    const body = [
-      `Name: ${data.get("name") || ""}`,
-      `Email: ${data.get("email") || ""}`,
-      `Phone: ${data.get("phone") || ""}`,
-      `Location: ${data.get("location") || ""}`,
-      `Project type: ${data.get("projectType") || ""}`,
-      "",
-      "Project details:",
-      `${data.get("details") || ""}`,
-    ].join("\n");
-    const mailto = `mailto:${site.email}?subject=${encodeURIComponent(
-      "Estimate request — Eco-Pathways"
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-  }
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
+    const payload = {
+      name: data.get("name"),
+      email: data.get("email"),
+      phone: data.get("phone"),
+      location: data.get("location"),
+      projectType: data.get("projectType"),
+      details: data.get("details"),
+      company: data.get("company"), // honeypot
+    };
 
-    // No Web3Forms key configured yet — use the email-client fallback.
-    if (!WEB3FORMS_KEY) {
-      fallbackToMailto(data);
-      setStatus("sent");
-      return;
-    }
-
-    data.append("access_key", WEB3FORMS_KEY);
     setStatus("submitting");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("/api/estimate", {
         method: "POST",
-        body: data,
-        headers: { Accept: "application/json" },
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
       const result = await res.json();
       if (res.ok && result.success) {
@@ -87,36 +65,18 @@ export default function EstimateForm() {
           </svg>
         </div>
         <h3 className="font-display mt-5 text-2xl font-semibold text-pine-800">
-          {WEB3FORMS_KEY
-            ? "Thanks — we've got your request"
-            : "Thanks — your email is ready to send"}
+          Thanks — we&apos;ve got your request
         </h3>
         <p className="mx-auto mt-3 max-w-md text-ink/70">
-          {WEB3FORMS_KEY ? (
-            <>
-              We&apos;ll review your project and get back to you shortly. Prefer to
-              talk now? Email{" "}
-              <a
-                href={`mailto:${site.email}`}
-                className="font-semibold text-pine-700 hover:underline"
-              >
-                {site.email}
-              </a>{" "}
-              or call {site.phone}.
-            </>
-          ) : (
-            <>
-              Your email client should have opened with the details pre-filled. If
-              it didn&apos;t, email us directly at{" "}
-              <a
-                href={`mailto:${site.email}`}
-                className="font-semibold text-pine-700 hover:underline"
-              >
-                {site.email}
-              </a>{" "}
-              or call {site.phone}.
-            </>
-          )}
+          We&apos;ll review your project and get back to you shortly. Prefer to
+          talk now? Email{" "}
+          <a
+            href={`mailto:${site.email}`}
+            className="font-semibold text-pine-700 hover:underline"
+          >
+            {site.email}
+          </a>{" "}
+          or call {site.phone}.
         </p>
       </div>
     );
@@ -127,12 +87,18 @@ export default function EstimateForm() {
       onSubmit={handleSubmit}
       className="rounded-2xl border border-pine-100 bg-white p-7 shadow-sm sm:p-9"
     >
-      <input
-        type="hidden"
-        name="subject"
-        value="New estimate request — Eco-Pathways"
-      />
-      <input type="hidden" name="from_name" value="Eco-Pathways Website" />
+      {/* Honeypot — hidden from people, irresistible to bots. If filled, the
+          server silently drops the submission. */}
+      <div className="absolute -left-[9999px]" aria-hidden="true">
+        <label htmlFor="company">Company (leave this blank)</label>
+        <input
+          id="company"
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label className={labelClass} htmlFor="name">
