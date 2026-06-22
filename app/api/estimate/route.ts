@@ -74,7 +74,7 @@ export async function POST(request: Request) {
 
     if (error) {
       return Response.json(
-        { success: false, error: "Could not send your request.", debug: error },
+        { success: false, error: "Could not send your request." },
         { status: 502 }
       );
     }

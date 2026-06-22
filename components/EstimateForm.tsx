@@ -18,42 +18,35 @@ const inputClass =
 const labelClass =
   "block text-sm font-semibold text-pine-800";
 
+// Where estimate requests go. Simple mailto delivery for now — opens the
+// visitor's email app pre-addressed to Frank. (A background Resend send is
+// ready in app/api/estimate/route.ts for once the domain is verified.)
+const ESTIMATE_EMAIL = "fhopf47@gmail.com";
+
 type Status = "idle" | "submitting" | "sent" | "error";
 
 export default function EstimateForm() {
   const [status, setStatus] = useState<Status>("idle");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    const payload = {
-      name: data.get("name"),
-      email: data.get("email"),
-      phone: data.get("phone"),
-      location: data.get("location"),
-      projectType: data.get("projectType"),
-      details: data.get("details"),
-      company: data.get("company"), // honeypot
-    };
+    const data = new FormData(e.currentTarget);
+    const subject = `Estimate request — ${data.get("name") || "Eco-Pathways"}`;
+    const body = [
+      `Name: ${data.get("name") || ""}`,
+      `Email: ${data.get("email") || ""}`,
+      `Phone: ${data.get("phone") || ""}`,
+      `Project location: ${data.get("location") || ""}`,
+      `Project type: ${data.get("projectType") || ""}`,
+      "",
+      "Project details:",
+      `${data.get("details") || ""}`,
+    ].join("\n");
 
-    setStatus("submitting");
-    try {
-      const res = await fetch("/api/estimate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const result = await res.json();
-      if (res.ok && result.success) {
-        form.reset();
-        setStatus("sent");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
+    window.location.href = `mailto:${ESTIMATE_EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+    setStatus("sent");
   }
 
   if (status === "sent") {
@@ -65,11 +58,12 @@ export default function EstimateForm() {
           </svg>
         </div>
         <h3 className="font-display mt-5 text-2xl font-semibold text-pine-800">
-          Thanks — we&apos;ve got your request
+          Almost there — just hit send
         </h3>
         <p className="mx-auto mt-3 max-w-md text-ink/70">
-          We&apos;ll review your project and get back to you shortly. Prefer to
-          talk now? Email{" "}
+          Your email app should have opened with everything filled in — press
+          send and we&apos;ll get back to you shortly. If it didn&apos;t open,
+          email{" "}
           <a
             href={`mailto:${site.email}`}
             className="font-semibold text-pine-700 hover:underline"
